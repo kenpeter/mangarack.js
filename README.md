@@ -19,9 +19,9 @@
 
 NOTE: the stack needs to be read backward.
 -----------
-* queue.js:75:3
-* Queue.push queue.js:63:63
-* index.js:58:11
+* 1 queue.js:75:3
+* 2 Queue.push queue.js:63:63
+* 3 index.js:58:11
 
 * lib/shared/common/index.js
 
@@ -59,12 +59,12 @@ emitter is like, it has data, error, end
 
 lib/shared/provider/index.js:14
 -------------
-#0 module.exports index.js:14:3
-#1 index.js:402:24
-#2 index.js:41:5
-#3 queue.js:88:8
-#4 Queue.push queue.js:63:63
-#5 index.js:58:11
+* 0 module.exports index.js:14:3
+* 1 index.js:402:24
+* 2 index.js:41:5
+* 3 queue.js:88:8
+* 4 Queue.push queue.js:63:63
+* 5 index.js:58:11
 
 
 
