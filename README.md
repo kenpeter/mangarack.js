@@ -57,7 +57,7 @@ emitter is like, it has data, error, end
   _maxListeners: undefined }
 
 
-lib/shared/provider/index.js:14
+lib/shared/provider/index.js:14 (it represents a series)
 -------------
 * 0 module.exports index.js:14:3
 * 1 index.js:402:24
@@ -66,6 +66,28 @@ lib/shared/provider/index.js:14
 * 4 Queue.push queue.js:63:63
 * 5 index.js:58:11
 
+It accesses different manga provider, batoto, kissmanga, 
+The series can add provider. It can alter its children, which is volumnes?
+
+
+
+lib/nodejs/index.js:221
+-------------
+* _enqueueSeries(emitter, queue, task, done)
+* Inside this _enqueueSeries(emitter, queue, task, done), we have request(task.series, 'utf8', function(err) {...
+* Inside request(task.series, 'utf8', function(err){..., we have 
+_populate(resource, encoding, done), which I think we use it to grep images from manga url.
+* Inside _populate(resource, encoding, done), we have _request(resource.address, encoding, function(err, data) {..., wiich is getting the actual data.
+
+
+lib/nodejs/request.js:103
+-------------
+* Inside _request(address, encoding, done, n), we simulate the web browser.
+* Use http.get
+* Inside http.get's callback, we have on data, on end, on error
+
+* on data, we push data to array. The data is strange, like all chapter num
+* on end, we zip it
 
 
 # MangaRack
