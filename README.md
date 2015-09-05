@@ -1,3 +1,73 @@
+# stack trace
+
+0 mangarack:3:1
+--------------
+* So it accesses to require(lib + '/cli/index');
+
+
+0 lib/cli/index.js:22:7
+-----------------
+1 index.js:87:12
+2 index.js:18:3
+3 index.js:45:3
+
+* So it gets into the cli index.js
+* It gets into _initialize
+* _initialize(options, batchPath, done), it has a done. done is the returned argument.
+* done returns {address: address, options: options}; 
+
+
+NOTE: the stack needs to be read backward.
+-----------
+* queue.js:75:3
+* Queue.push queue.js:63:63
+* index.js:58:11
+
+* lib/shared/common/index.js
+
+module.exports = {
+  affix: require('./affix'),
+  alias: require('./alias'),
+  async: require('./async'),
+  clean: require('./clean'),
+  lock: require('./lock'),
+  Queue: require('./queue')
+};
+
+basically, it imports all libs, e.g. the queue.
+
+* lib/shared/common/queue.js
+
+Queue.prototype.push, push into the queue, then we run '_tryRun' for each item
+
+* lib/shared/common/queue.js
+
+still in _tryRun. Basically, we run each item with item.handler in the Queue.
+item.handler can handle chapter or series.
+
+
+In item.handler there is a thing called _taskSeries(emitter, queue, task, done)
+-----------
+
+There is _enqueueSeries(emitter, queue, task, done) within _taskSeries(emitter, queue, task, done)
+
+emitter is like, it has data, error, end
+{ domain: null,
+  _events: { data: [Function], error: [Function], end: [Function] },
+  _maxListeners: undefined }
+
+
+lib/shared/provider/index.js:14
+-------------
+#0 module.exports index.js:14:3
+#1 index.js:402:24
+#2 index.js:41:5
+#3 queue.js:88:8
+#4 Queue.push queue.js:63:63
+#5 index.js:58:11
+
+
+
 # MangaRack
 
 MangaRack is a console line application capable of downloading manga series from popular manga scanlation sites. Each downloaded chapter is stored on your computer as a comic book archive and, by default, contains additional embedded meta information (such as the writer and summary). The embedded meta information is compatible with the popular ComicRack application suite.
