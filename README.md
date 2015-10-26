@@ -1,28 +1,29 @@
-# stack trace
+# Gary: code flow
 
+/cli/index
+------
+* require(lib + '/cli/index');
+* We start from here.
+
+* Trace:
 0 mangarack:3:1
---------------
-* So it accesses to require(lib + '/cli/index');
 
 
-0 lib/cli/index.js:22:7
------------------
+_initialize(options, batchPath, done)
+-------
+* So it gets into the cli index.js
+* _initialize(options, batchPath, done), done is the callback
+* done takes 2 args, err and tasks
+* tasks === {address: address, options: options}
+
+* Trace
 1 index.js:87:12
 2 index.js:18:3
 3 index.js:45:3
 
-* So it gets into the cli index.js
-* It gets into _initialize
-* _initialize(options, batchPath, done), it has a done. done is the returned argument.
-* done returns {address: address, options: options}; 
 
-
-NOTE: the stack needs to be read backward.
------------
-* 1 queue.js:75:3
-* 2 Queue.push queue.js:63:63
-* 3 index.js:58:11
-
+Queue
+-----------------------------------------
 * lib/shared/common/index.js
 
 module.exports = {
@@ -45,9 +46,16 @@ Queue.prototype.push, push into the queue, then we run '_tryRun' for each item
 still in _tryRun. Basically, we run each item with item.handler in the Queue.
 item.handler can handle chapter or series.
 
+* Trace
+1 queue.js:75:3
+2 Queue.push queue.js:63:63
+3 index.js:58:11
+
+
 
 In item.handler there is a thing called _taskSeries(emitter, queue, task, done)
 -----------
+At lib/nodejs/index.js:371, _taskSeries(emitter, queue, task, done)
 
 There is _enqueueSeries(emitter, queue, task, done) within _taskSeries(emitter, queue, task, done)
 
@@ -57,37 +65,11 @@ emitter is like, it has data, error, end
   _maxListeners: undefined }
 
 
-lib/shared/provider/index.js:14 (it represents a series)
--------------
-* 0 module.exports index.js:14:3
-* 1 index.js:402:24
-* 2 index.js:41:5
-* 3 queue.js:88:8
-* 4 Queue.push queue.js:63:63
-* 5 index.js:58:11
-
-It accesses different manga provider, batoto, kissmanga, 
-The series can add provider. It can alter its children, which is volumnes?
 
 
 
-lib/nodejs/index.js:221
--------------
-* _enqueueSeries(emitter, queue, task, done)
-* Inside this _enqueueSeries(emitter, queue, task, done), we have request(task.series, 'utf8', function(err) {...
-* Inside request(task.series, 'utf8', function(err){..., we have 
-_populate(resource, encoding, done), which I think we use it to grep images from manga url.
-* Inside _populate(resource, encoding, done), we have _request(resource.address, encoding, function(err, data) {..., wiich is getting the actual data.
 
 
-lib/nodejs/request.js:103
--------------
-* Inside _request(address, encoding, done, n), we simulate the web browser.
-* Use http.get
-* Inside http.get's callback, we have on data, on end, on error
-
-* on data, we push data to array. The data is strange, like all chapter num
-* on end, we zip it
 
 
 # MangaRack

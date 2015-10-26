@@ -7,7 +7,7 @@
 module.exports = function(grunt) {
   // Initialize the configuration.
   grunt.initConfig({
-    jscs: {
+    jscs: { // Code style check
       main: {options: {config: true}, src: 'Gruntfile.js'},
       lib: {options: {config: true}, src: 'lib/**/*.js'}
     },
